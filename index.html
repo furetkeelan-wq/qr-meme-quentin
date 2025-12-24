@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>💥</title>
+<title>QR Video</title>
 
 <style>
 html, body {
@@ -12,20 +12,6 @@ html, body {
     background: black;
     height: 100%;
     overflow: hidden;
-}
-
-#container {
-    position: fixed;
-    inset: 0;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-}
-
-img {
-    width: 100%;
-    height: 100%;
-    object-fit: contain;
 }
 
 #start {
@@ -37,32 +23,48 @@ img {
     display: flex;
     justify-content: center;
     align-items: center;
-    cursor: pointer;
     z-index: 10;
+    cursor: pointer;
+}
+
+video {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
 }
 </style>
 </head>
 
 <body>
 
-<div id="start">🔊 ACTIVER LE SON</div>
+<!-- ÉCRAN DE DÉMARRAGE (OBLIGATOIRE SUR MOBILE) -->
+<div id="start">▶️ LANCER</div>
 
-<div id="container">
-    <img src="image.mp4">
-</div>
+<!-- VIDÉO SANS SON -->
+<video id="video" muted playsinline loop>
+    <source src="video.mp4" type="video/mp4">
+</video>
 
+<!-- MUSIQUE SÉPARÉE -->
 <audio id="audio" src="son.mp3" loop></audio>
 
 <script>
 const start = document.getElementById("start");
+const video = document.getElementById("video");
 const audio = document.getElementById("audio");
 
-start.addEventListener("click", () => {
-    audio.play();
+start.addEventListener("click", async () => {
     start.style.display = "none";
 
-    if (document.documentElement.requestFullscreen) {
-        document.documentElement.requestFullscreen();
+    try {
+        await video.play();
+        await audio.play();
+
+        if (document.documentElement.requestFullscreen) {
+            document.documentElement.requestFullscreen();
+        }
+    } catch (e) {
+        console.log("Interaction requise :", e);
     }
 });
 </script>
